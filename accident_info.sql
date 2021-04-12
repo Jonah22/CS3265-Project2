@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS accident_info (
     date_of_accident VARCHAR(10),
     day_of_week TINYINT UNSIGNED,
     time_of_accident VARCHAR(5),
-    local_authority_district TINYINT UNSIGNED,
+    local_authority_district INT UNSIGNED,
     local_authority_highway VARCHAR(9),
     first_road_class TINYINT,
     first_road_number INT,
@@ -64,6 +64,7 @@ CHANGE COLUMN accident_id
 accident_id INT(11) NOT NULL AUTO_INCREMENT FIRST;
 
 -- Create accident table.
+DROP TABLE IF EXISTS accident;
 CREATE TABLE IF NOT EXISTS accident (
 	accident_id INT,
 	accident_index VARCHAR(15),
@@ -82,13 +83,14 @@ CREATE TABLE IF NOT EXISTS accident (
 ) ENGINE = INNODB;
 
 -- Create location table.
+DROP TABLE IF EXISTS location;
 CREATE TABLE IF NOT EXISTS location (
 	accident_id INT,
     location_easting_OSGR VARCHAR(6),
     location_northing_OSGR VARCHAR(7),
     longitude VARCHAR(9),
     latitude VARCHAR(9),
-    local_authority_district TINYINT UNSIGNED,
+    local_authority_district INT UNSIGNED,
     local_authority_highway VARCHAR(9),
     first_road_class TINYINT,
     first_road_number INT,
@@ -96,13 +98,14 @@ CREATE TABLE IF NOT EXISTS location (
     second_road_number INT,
     urban_or_rural_area TINYINT UNSIGNED,
     LSOA_of_accident_location VARCHAR(10),
-    CONSTRAINT fk_acc_id FOREIGN KEY (accident_id)
+    CONSTRAINT fk_acc_id_loc FOREIGN KEY (accident_id)
 		REFERENCES accident_info (accident_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE = INNODB;
 
 -- Create conditions table.
+DROP TABLE IF EXISTS conditions;
 CREATE TABLE IF NOT EXISTS conditions (
 	accident_id INT,
     road_type TINYINT,
@@ -116,7 +119,7 @@ CREATE TABLE IF NOT EXISTS conditions (
     road_surface_conditions TINYINT,
     special_conditions_at_site TINYINT,
     carriageway_hazards TINYINT,
-    CONSTRAINT fk_acc_id FOREIGN KEY (accident_id)
+    CONSTRAINT fk_acc_id_cond FOREIGN KEY (accident_id)
 		REFERENCES accident_info (accident_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
