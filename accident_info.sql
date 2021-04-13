@@ -9,7 +9,7 @@ CREATE DATABASE uk_car_accidents;
 USE uk_car_accidents;
 
 
--- Create the megatable.
+-- Create the megatable titled accideent_info.
 DROP TABLE IF EXISTS accident_info;
 CREATE TABLE IF NOT EXISTS accident_info (
 	# VARCHAR(15) to hold the alphanumeric characters of each accident's index code.
@@ -88,13 +88,15 @@ LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
 
--- Change primary key and order of columns.
+-- Change primary key.
 ALTER TABLE accident_info
 DROP PRIMARY KEY;
 
 ALTER TABLE accident_info
 ADD COLUMN accident_id INT AUTO_INCREMENT PRIMARY KEY;
 
+
+-- Put newly added primary key column as the first in the megatable.
 ALTER TABLE accident_info 
 CHANGE COLUMN accident_id 
 accident_id INT(11) NOT NULL AUTO_INCREMENT FIRST;
@@ -168,7 +170,7 @@ CREATE TABLE IF NOT EXISTS conditions (
 ) ENGINE = INNODB;
 
 
--- Insert data from accident_info into accident table
+-- Insert data from accident_info into accident table.
 INSERT INTO accident(accident_id,
 					accident_index,
 					police_force,
@@ -192,7 +194,7 @@ SELECT accident_id,
 FROM accident_info;
 
 
--- Insert data from accident_info into location table
+-- Insert data from accident_info into location table.
 INSERT INTO location(accident_id,
 					location_easting_OSGR,
 					location_northing_OSGR,
@@ -222,7 +224,7 @@ SELECT accident_id,
 FROM accident_info;
 
 
--- Insert data from accident_info into conditions table
+-- Insert data from accident_info into conditions table.
 INSERT INTO conditions(accident_id,
 						road_type,
 						speed_limit,
@@ -248,3 +250,33 @@ SELECT accident_id,
 		special_conditions_at_site,
 		carriageway_hazards
 FROM accident_info;
+
+
+-- Advanced Feature #1 - Stored procedure to insert a new accident.
+DROP PROCEDURE IF EXISTS create_new_accident;
+
+DELIMITER //
+
+CREATE PROCEDURE create_new_accident(
+	IN 
+)
+
+BEGIN
+
+DECLARE EXIT HANDLER FOR 1048
+SELECT "..." AS message;
+
+# insert statement
+
+SELECT "accident was inserted." AS message;
+
+END //
+
+-- Advanced Feature #2 - Stored procedure to edit an accident.
+
+
+-- Advanced Feature #3 - Stored procedure to delete an accident.
+
+
+-- Advanced Feature #4 - 
+
