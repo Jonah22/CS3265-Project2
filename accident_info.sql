@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS accident_info (
     # TINYINT to hold the number codes for each day of the week.
     day_of_week TINYINT UNSIGNED,
     # TIME to hold the time that each accident occurred at.
-    time_of_accident TIME,
+    time_of_accident VARCHAR(5),
     # INT to hold the number codes for each district district since there are over 255 (TINYINT max).
     local_authority_district INT UNSIGNED,
     # VARCHAR(9) to hold the alphanumeric characters of the highway authority.
@@ -276,7 +276,19 @@ END //
 
 
 -- Advanced Feature #3 - Stored procedure to delete an accident.
+DROP PROCEDURE IF EXISTS deleteAccident;
 
+DELIMITER //
+
+CREATE PROCEDURE deleteAccident(IN accidentIndex VARCHAR(50))
+BEGIN
+
+  DELETE FROM uk_car_accidents
+  WHERE accident_index = accidentIndex;
+
+END//
+
+DELIMITER ;
 
 -- Advanced Feature #4 - 
 
